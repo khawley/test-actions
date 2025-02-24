@@ -1,0 +1,30 @@
+name: Remove Stale Branches
+
+on:
+  schedule:
+    - cron: "0 16,0 * * 1-5" # Every weekday at 9am and 5pm PT (16:00 UTC and 00:00 UTC next day)
+  workflow_dispatch: # Allows manual triggering
+
+env:
+  REMOVE_STALE_BRANCHES_DAYS_BEFORE_STALE: 2
+
+jobs:
+  remove-stale-branches:
+    name: Remove Stale Branches
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required for commit comments.
+      actions: read
+      pull-requests: read
+
+    steps:
+      - uses: fpicalausa/remove-stale-branches@v2.1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          dry-run: false
+          days-before-branch-stale: ${{ env.REMOVE_STALE_BRANCHES_DAYS_BEFORE_STALE }}
+          ignore-branches-with-open-prs: true
+          ignore-unknown-authors: true
+          exempt-protected-branches: true
+          default-recipient: "khawley"
+          stale-branch-message: "@{author} Your branch [{branchName}]({branchUrl}) hasn't been updated in the last ${{ env.REMOVE_STALE_BRANCHES_DAYS_BEFORE_STALE }} days and is marked as stale. It will be removed in a week.\r\nIf you want to keep this branch around, delete this comment or add new commits to this branch."
