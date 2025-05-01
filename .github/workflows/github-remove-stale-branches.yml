@@ -18,7 +18,7 @@ jobs:
       pull-requests: read
 
     steps:
-      - uses: fpicalausa/remove-stale-branches@v2.1.2
+      - uses: fpicalausa/remove-stale-branches@2151927aad96e590446393c42b515f8efafef3d3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           dry-run: false
@@ -27,4 +27,5 @@ jobs:
           ignore-unknown-authors: true
           exempt-protected-branches: true
           default-recipient: "khawley"
+          restrict-branches-regex: "^[0-9].*$"
           stale-branch-message: "@{author} Your branch [{branchName}]({branchUrl}) hasn't been updated in the last ${{ env.REMOVE_STALE_BRANCHES_DAYS_BEFORE_STALE }} days and is marked as stale. It will be removed in a week.\r\nIf you want to keep this branch around, delete this comment or add new commits to this branch."
